@@ -1,0 +1,7 @@
+parallel: true   # default: false
+format: progress # default: Standard::Formatter
+ignore:
+  # Legacy migrations
+  - 'db/migrate/2024*.rb'
+  - "db/schema.rb"
+  - "db/seeds.rb"

@@ -1,0 +1,32 @@
+name: Run Linter
+
+on:
+  push:
+    branches-ignore:
+      - 'master'
+
+jobs:
+  lint:
+    name: lint StandardRb
+    runs-on: self-hosted  # Ensure this matches your runner label
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.2'
+
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install
+
+      - name: Run Linter standardrb
+        run: |
+          ./bin/lint

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Welcome to dermapro.tn</h1>
+    <h1 style="color:green;"> Hi <%= @user.email %> </h1>
+
+    <h4>
+      <%= @greeting %> <%= @user.firstname %>, <br>
+
+      <% if @user.type == "Patient" %>
+        <!-- Message for patients -->
+        <% if @demande.status == "pending" %>
+          You have successfully sent a consultation to Dr. <%= @demande.doctor.firstname  %> <%= @demande.doctor.lastname  %>.  request via dermapro.tn. <br>
+          Your request is in progress and will be treated as soon as possible.
+          <p>Thanks for contacting us and have a great day!</p>
+        <% elsif @demande.status == "approved" %>
+          Congratulations! Your last consultation demande  has been accepted. Please check your account.
+          <p>Thanks for contacting us and have a great day!</p>
+        <% elsif @demande.status == "rejected" %>
+        
+          We regret to inform you that your consultation request has been refused. check your account for more details
+          <p>Thanks for contacting us and have a great day!</p>
+        <% elsif @demande.status == "canceled" %>
+           Your last consultation demande  has been accanceledcepted. Please check your account.
+          <p>Thanks for time a great day!</p
+        <% else %>
+          Invalid status for the request.
+        <% end %>
+
+      <% elsif @user.type == "Doctor" %>
+        <!-- Message for doctors -->
+        <% if @demande.status == "pending" %>
+          You have received a new consultation request from Mr <%= @demande.patient.firstname  %> <%= @demande.patient.lastname  %>. Please review the details in your account.
+        <% else %>
+          The consultation request from Mr <%= @demande.patient.firstname  %> <%= @demande.patient.lastname  %>. has been updated. Please check the changes in your account.
+        <% end %>
+
+      <% else %>
+        <!-- Default message for any other user type -->
+        Invalid user type.
+      <% end %>
+
+      <h2 style="color:green;">DermaPro Notification System!</h2>
+    </h4>
+  </body>
+</html>

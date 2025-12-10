@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h1>Medical Report</h1>
+    <h2>Dear <%= @patient.firstname %> <%= @patient.lastname %>,</h2>
+
+    <p>
+      We are sending you your medical report. Please find the report below:
+    </p>
+
+    <p>
+      <a href="<%= @report_pdf_url %>" target="_blank">Click here to view your report</a>
+    </p>
+
+    <p>Thank you for using dermapro.tn!</p>
+  </body>
+</html>

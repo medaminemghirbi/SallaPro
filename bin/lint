@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+ CHANGED_FILES=$(git diff origin/master --name-only --diff-filter=MA | grep '^.*\.rb$')
+
+ if [ $(echo -n $CHANGED_FILES | wc -c) -eq 0 ]; then
+   echo "No ruby files to format."
+ else
+   if [ "$1" == '--fix' ]; then
+     bundle exec standardrb $CHANGED_FILES --fix --config .standard.yml
+   else
+     bundle exec standardrb $CHANGED_FILES --config .standard.yml
+   fi
+ fi
