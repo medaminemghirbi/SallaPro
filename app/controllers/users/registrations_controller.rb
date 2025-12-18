@@ -11,9 +11,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end 
   def create
     user_class = case sign_up_params[:type]
-                 when "Admin" then User
-                 when "Doctor" then Doctor
-                 else Patient
+                 when "Admin" then Admin
+                 when "Superadmin" then Superadmin
+                 when "Employee" then Employee
+                 else User
                  end
   
     build_resource(sign_up_params.merge(type: user_class.name, plateform: 0))

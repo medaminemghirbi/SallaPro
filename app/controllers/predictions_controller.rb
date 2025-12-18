@@ -141,7 +141,7 @@ class PredictionsController < ApplicationController
   def generate_pdf(predicted_class, probability, maladie, image_path)
     Prawn::Document.new do |pdf|
       # Title
-      pdf.text "© DermaPro Medical App", size: 10, align: :right
+      pdf.text "© FarhaTN Medical App", size: 10, align: :right
       pdf.text "Medical Prediction Report", size: 24, style: :bold, align: :center
       pdf.move_down 3
       pdf.text "Generated on: #{Time.now.strftime("%d-%m-%Y %H:%M:%S")}", size: 10, align: :right

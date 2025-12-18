@@ -22,7 +22,7 @@ class FactureService
         consultation.patient.firstname,
         "Address if available",
         "City, State, ZIP",
-        consultation.patient.location,
+        "kalla",
 
         consultation.patient.email
       ],
