@@ -243,6 +243,13 @@ class Api::V1::UsersController < ApplicationController
         render json: { logged_in: false, user: nil }, status: :unauthorized
       end
     end
+    def current_user_role
+      if current_user
+        render json: { logged_in: true, role: current_user.type }
+      else
+        render json: { logged_in: false, role: nil }, status: :unauthorized
+      end
+    end
   # ************************* les fonctions private de classe ***********************#
   private
 
