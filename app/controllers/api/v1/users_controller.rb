@@ -234,6 +234,15 @@ class Api::V1::UsersController < ApplicationController
       current_doctor.verification_pdf.attach(params[:verification_pdf])
       render json: { message: 'Verification PDF uploaded' }, status: :ok
     end
+
+
+    def current_user_info
+      if current_user
+        render json: { logged_in: true, user: UserSerializer.new(current_user) }
+      else
+        render json: { logged_in: false, user: nil }, status: :unauthorized
+      end
+    end
   # ************************* les fonctions private de classe ***********************#
   private
 

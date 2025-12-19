@@ -15,21 +15,22 @@ def download_image(url)
 end
 
 
-# === Seed Admin ===
-puts "👤 Seeding Admin..."
+# === Seed Superadmin ===
+puts "👤 Seeding Superadmin..."
 admin_avatar = download_image("https://thumbs.dreamstime.com/b/admin-reliure-de-bureau-sur-le-bureau-en-bois-sur-la-table-crayon-color%C3%A9-79046621.jpg")
 
 if admin_avatar
-  admin = Admin.create!(
-    email: "Admin@example.com",
-    firstname: "Admin",
-    lastname: "Admin",
-    password: "123456",
-    password_confirmation: "123456",
+  admin = Superadmin.create!(
+    email: "superadmin@farhatn.com",
+    firstname: "Superadmin",
+    lastname: "Superadmin",
+    password: "12345678",
+    type: "Superadmin",
+    password_confirmation: "12345678",
     confirmed_at: Time.zone.now
   )
   admin.avatar.attach(io: admin_avatar, filename: "admin_avatar.jpg", content_type: "image/jpeg")
   puts "✔️ Admin seeded"
 else
-  puts "⚠️ Failed to download admin avatar"
+  puts "⚠️ Failed to download superadmin avatar"
 end

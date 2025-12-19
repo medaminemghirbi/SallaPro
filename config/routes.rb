@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :password_resets
       resources :patients
-
+      get 'current_user_info', to: 'users#current_user_info'
       resources :users do
         member do
           put "email_notifications", to: "users#update_email_notifications"
