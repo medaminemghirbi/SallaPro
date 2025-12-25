@@ -6,7 +6,7 @@ default: &default
 
 development:
   <<: *default
-  database: salla_pro_database
+  database: reservily_database
   variables:
     timezone: 'UTC'
 # Warning: The database defined as "test" will be erased and
@@ -14,7 +14,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: salla_pro_database_test
+  database: reservily_database_test
 production:
   url: <%= ENV["DATABASE_URL"] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>

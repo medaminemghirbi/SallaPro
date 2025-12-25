@@ -10,13 +10,14 @@ require "json"
   puts "Seeding Company types..."
   starting_order = 0
 
-  YAML.load_file(Rails.root.join("db", "data", "seeds", "company_types.yml")).each do |disease_data|
+  YAML.load_file(Rails.root.join("db", "data", "seeds", "categories.yml")).each do |disease_data|
     starting_order += 1
 
-    CompanyType.create!(
+    Categorie.create!(
       name: disease_data["name"],
       description: disease_data["description"],
-      key: disease_data["key"]
+      key: disease_data["key"],
+      resource_type: disease_data["resource_type"]
     )
   end
   puts "Seeding Company types done"
@@ -48,9 +49,7 @@ if admin_avatar
 else
   puts "⚠️ Failed to download superadmin avatar"
 end
-
-
-# === Seed Admin + it company ===
+# === Seed Admin + its Company + Trial Subscription ===
 admin_avatar = download_image("https://thumbs.dreamstime.com/b/admin-reliure-de-bureau-sur-le-bureau-en-bois-sur-la-table-crayon-color%C3%A9-79046621.jpg")
 
 if admin_avatar
@@ -59,17 +58,35 @@ if admin_avatar
     firstname: "Admin",
     lastname: "Admin",
     password: "12345678",
-    type: "Admin",
     password_confirmation: "12345678",
+    type: "Admin",
     confirmed_at: Time.zone.now
   )
-  admin.avatar.attach(io: admin_avatar, filename: "admin_avatar.jpg", content_type: "image/jpeg")
+
+  admin.avatar.attach(
+    io: admin_avatar,
+    filename: "admin_avatar.jpg",
+    content_type: "image/jpeg"
+  )
+
   puts "✔️ Admin seeded"
 end
-user = Admin.first
-Company.create!(
-  user: user,
-  name: "Salle Sghaier",
-  company_type_id: CompanyType.find_by(key: "salle_des_fetes").id,
-  active: true
+
+# Ensure admin exists
+admin = Admin.find_by(email: "admin@farhatn.com")
+
+# Create company
+company = Company.create!(
+  user_id: admin.id, # link admin to company
+  name: "Salle Sghaier"
 )
+
+# Create trial subscription for the company
+Subscription.create!(
+  company_id: company.id,
+  plan: 0, # trial
+  status: 0, # active
+  start_date: Date.today,
+  end_date: Date.today + 14.days
+)
+puts "✔️ Company seeded"

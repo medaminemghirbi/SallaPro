@@ -3,6 +3,7 @@ class UserSerializer < ActiveModel::Serializer
   attributes :id, :email, :firstname, :lastname, :address, :birthday, 
              :gender, :civil_status, :is_archived, :order, 
              :plan, :language, :confirmed_at, :type, :jti, 
+             :phone_number,
              :created_at, :updated_at, :user_image_url
              
   def type

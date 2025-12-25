@@ -1,75 +1,100 @@
+# config/categories.yml
 - key: "hotel"
   name: "Hôtel"
+  resource_type: "Space"
   description: "Établissement hôtelier proposant des espaces pour événements, séminaires et hébergement."
 
 - key: "salle_des_fetes"
   name: "Salle des fêtes"
+  resource_type: "Space"
   description: "Salle dédiée aux mariages, anniversaires et grandes célébrations."
 
 - key: "centre_de_congres"
   name: "Centre de congrès"
+  resource_type: "Space"
   description: "Espace professionnel pour conférences, congrès et événements d’entreprise."
 
 - key: "espace_evenementiel"
   name: "Espace événementiel"
+  resource_type: "Space"
   description: "Lieu polyvalent adaptable à différents types d’événements."
 
 - key: "maison_d_hotes"
   name: "Maison d’hôtes"
+  resource_type: "Space"
   description: "Lieu convivial pour événements privés de petite et moyenne taille."
 
 - key: "restaurant_evenementiel"
   name: "Restaurant événementiel"
+  resource_type: "Space"
   description: "Restaurant proposant l’organisation d’événements privés et professionnels."
 
 - key: "plage_privee"
   name: "Plage privée"
+  resource_type: "Space"
   description: "Espace en bord de mer pour événements festifs et cérémonies."
 
 - key: "jardin_prive"
   name: "Jardin privé"
+  resource_type: "Space"
   description: "Espace extérieur pour réceptions, mariages et événements en plein air."
 
 - key: "rooftop"
   name: "Rooftop"
+  resource_type: "Space"
   description: "Terrasse en hauteur offrant un cadre moderne pour événements exclusifs."
 
 - key: "groupe_musical"
   name: "Groupe musical"
+  resource_type: "Service"
   description: "Groupe assurant l’animation musicale lors d’événements."
 
 - key: "dj"
   name: "DJ"
+  resource_type: "Service"
   description: "Animateur musical spécialisé dans les événements et soirées."
 
 - key: "traiteur"
   name: "Traiteur"
+  resource_type: "Service"
   description: "Service de restauration pour événements privés et professionnels."
 
 - key: "photographe"
   name: "Photographe"
+  resource_type: "Service"
   description: "Professionnel chargé de la couverture photo des événements."
 
 - key: "videaste"
   name: "Vidéaste"
+  resource_type: "Service"
   description: "Création de vidéos professionnelles pour événements."
 
 - key: "decorateur"
   name: "Décorateur"
+  resource_type: "Service"
   description: "Conception et mise en place de la décoration événementielle."
 
 - key: "agence_evenementielle"
   name: "Agence événementielle"
+  resource_type: "Service"
   description: "Organisation complète et coordination d’événements."
 
 - key: "wedding_planner"
   name: "Wedding planner"
+  resource_type: "Service"
   description: "Spécialiste de l’organisation et de la coordination de mariages."
 
 - key: "location_materiel"
   name: "Location de matériel"
+  resource_type: "Equipment"
   description: "Location de matériel événementiel (son, lumière, mobilier)."
 
 - key: "son_lumiere"
   name: "Son & lumière"
+  resource_type: "Equipment"
   description: "Installation et gestion du son et de l’éclairage pour événements."
+
+- key: "logistique_transport"
+  name: "Transport & Livraison"
+  resource_type: "Vehicle"
+  description: "Flotte de véhicules pour le transport de matériel ou de personnes."
