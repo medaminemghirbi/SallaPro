@@ -21,7 +21,7 @@ class ApplicationController < ActionController::API
       unless @current_user.jti == payload[:jti]
         return render_unauthorized('Token has been revoked')
       end
-    raise Warden::NotAuthenticated unless user.jti == payload[:jti]
+    raise Warden::NotAuthenticated unless @current_user.jti == payload[:jti]
     rescue ActiveRecord::RecordNotFound
       render_unauthorized('User not found')
     rescue JwtExpiredError
@@ -32,6 +32,10 @@ class ApplicationController < ActionController::API
       render_unauthorized("Authentication error: #{e.message}")
     end
   end
+  
+  def current_user
+    @current_user  # ✅ just return the variable, no recursion
+  end
 
   private
 
@@ -39,3 +43,6 @@ class ApplicationController < ActionController::API
     render json: { error: message }, status: :unauthorized
   end
 end
+
+class JwtExpiredError < StandardError; end
+class JwtInvalidError < StandardError; end

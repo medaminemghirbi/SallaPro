@@ -33,6 +33,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :password_resets
       resources :patients
+      resources :categories, only: [:index]
+      resources :companies, only: [:index, :create, :show, :update, :destroy]
+      get 'current_user_info', to: 'users#current_user_info'
+      get 'current_user_role', to: 'users#current_user_role'
 
       resources :users do
         member do

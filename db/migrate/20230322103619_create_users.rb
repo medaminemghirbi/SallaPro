@@ -31,8 +31,7 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.integer :plan, default: 0
       t.string :language, default: "fr"
       t.string :jti, default: "", null: false
-      
- 
+      t.string :phone_number
 
       t.timestamps
     end
