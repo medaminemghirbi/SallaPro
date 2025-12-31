@@ -5,6 +5,7 @@ class CreateCompanies < ActiveRecord::Migration[7.0]
       t.string :name, null: false
       t.text :description
       t.string :billing_address
+      t.boolean :active, default: true
       t.string :phone_number
       t.timestamps
     end

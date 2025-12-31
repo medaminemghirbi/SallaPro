@@ -5,7 +5,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
   self.table_name = "users"
-  self.inheritance_column = :_type_disabled
   ## STI Type Checks
   def admin?; type == "Admin"; end
   def superadmin?; type == "Superadmin"; end

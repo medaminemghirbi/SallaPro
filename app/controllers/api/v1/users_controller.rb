@@ -1,6 +1,7 @@
 class Api::V1::UsersController < ApplicationController
   before_action :authorize_request, except: %i[plateform_stats gender_stats count_all_for_admin update_image_user update_location top_consultation_gouvernement]
   # ************************* custom functionlity ***************************#
+  before_action :set_admin, only: [:resend_confirmation]
 
   def count_all_for_admin
     @apointements = Consultation.current.all.count
@@ -243,6 +244,15 @@ class Api::V1::UsersController < ApplicationController
         render json: { logged_in: false, user: nil }, status: :unauthorized
       end
     end
+
+    def current_company_info
+      if current_user && current_user.company
+        render json: { logged_in: true, company: CompanySerializer.new(current_user.company) }
+      else
+        render json: { logged_in: false, company: nil }, status: :unauthorized
+      end
+    end
+
     def current_user_role
       if current_user
         render json: { logged_in: true, role: current_user.type }
@@ -250,6 +260,20 @@ class Api::V1::UsersController < ApplicationController
         render json: { logged_in: false, role: nil }, status: :unauthorized
       end
     end
+
+
+
+  def resend_confirmation
+    if @admin.confirmed?
+      render json: { message: "Already confirmed" }, status: :unprocessable_entity
+      return
+    end
+
+    @admin.send_confirmation_instructions
+
+    render json: { message: "Confirmation email sent" }, status: :ok
+  end
+
   # ************************* les fonctions private de classe ***********************#
   private
 
@@ -278,5 +302,9 @@ class Api::V1::UsersController < ApplicationController
 
   def params_location_doctor
     params.permit(:id, :latitude, :longitude)
+  end
+
+    def set_admin
+    @admin = Admin.find(params[:id])
   end
 end

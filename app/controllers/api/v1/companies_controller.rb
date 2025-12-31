@@ -38,7 +38,7 @@ class Api::V1::CompaniesController < ApplicationController
 
   def show
     company = Company
-                .includes(:admin,  :subscription)
+                .includes(:admin)
                 .find(params[:id])
 
     render json: company,
