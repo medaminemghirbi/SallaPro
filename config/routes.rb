@@ -34,10 +34,17 @@ Rails.application.routes.draw do
       resources :password_resets
       resources :patients
       resources :categories, only: [:index]
+      resources :clients
       resources :companies, only: [:index, :create, :show, :update, :destroy]
+      resources :calendars, only: [:index]  
+      resources :users do
+        member do
+          post :resend_confirmation
+        end
+      end
       get 'current_user_info', to: 'users#current_user_info'
       get 'current_user_role', to: 'users#current_user_role'
-
+      get 'current_company_info', to: 'users#current_company_info'
       resources :users do
         member do
           put "email_notifications", to: "users#update_email_notifications"

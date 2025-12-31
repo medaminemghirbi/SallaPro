@@ -49,7 +49,7 @@ if admin_avatar
 else
   puts "⚠️ Failed to download superadmin avatar"
 end
-# === Seed Admin + its Company + Trial Subscription ===
+# === Seed Admin + its Company ===
 admin_avatar = download_image("https://thumbs.dreamstime.com/b/admin-reliure-de-bureau-sur-le-bureau-en-bois-sur-la-table-crayon-color%C3%A9-79046621.jpg")
 
 if admin_avatar
@@ -60,6 +60,7 @@ if admin_avatar
     password: "12345678",
     password_confirmation: "12345678",
     type: "Admin",
+    default_admin: true,
     confirmed_at: Time.zone.now
   )
 
@@ -78,15 +79,11 @@ admin = Admin.find_by(email: "admin@farhatn.com")
 # Create company
 company = Company.create!(
   user_id: admin.id, # link admin to company
-  name: "Salle Sghaier"
+  active: true,
+  name: "Salle Sghaier",
+  phone_number: "+21612345678",
+  description: "A description for Salle Sghaier",
+  billing_address: "123 Billing St, City, Country"
 )
 
-# Create trial subscription for the company
-Subscription.create!(
-  company_id: company.id,
-  plan: 0, # trial
-  status: 0, # active
-  start_date: Date.today,
-  end_date: Date.today + 14.days
-)
 puts "✔️ Company seeded"

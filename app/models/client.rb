@@ -1,6 +1,5 @@
-class Superadmin < User
+class Client < User
   ##scopes
-  scope :current, -> { where(is_archived: false) }
   ##Includes
 
   ## Callbacks
@@ -8,6 +7,7 @@ class Superadmin < User
   ## Validations
 
   ## Associations
+  has_one :company, foreign_key: 'user_id', dependent: :destroy
 
   private
 end
