@@ -33,6 +33,7 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :jti, default: "", null: false
       t.string :phone_number
       t.boolean :default_admin, default: false
+      t.string :country
       t.timestamps
     end
 
