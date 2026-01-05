@@ -1,5 +1,5 @@
 class ClientSerializer < ActiveModel::Serializer
-  attributes :id, :firstname, :lastname, :birthday, :address, :phone_number, :email, :full_name, :unique_code, :created_at, :updated_at, :user_image_url
+  attributes :id, :firstname, :lastname, :birthday, :address, :phone_number, :country, :email, :full_name, :unique_code, :created_at, :updated_at, :user_image_url
 
   def full_name
     "#{object.firstname} #{object.lastname}"

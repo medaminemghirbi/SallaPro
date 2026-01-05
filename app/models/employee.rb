@@ -23,7 +23,6 @@ class Employee < User
   has_many :blogs, dependent: :destroy
   has_many :consultations, dependent: :destroy
   has_many :patients, through: :consultations
-  has_many :phone_numbers, dependent: :destroy
   has_many :custom_mails
   has_many :ratings, through: :consultations
 

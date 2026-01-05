@@ -26,9 +26,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
 
   ## Associations
-    has_one_attached :avatar, dependent: :destroy
-
-  has_many :phone_numbers, dependent: :destroy
+  has_one_attached :avatar, dependent: :destroy
 
   def verification_pdf_url
     # Get the URL of the associated image

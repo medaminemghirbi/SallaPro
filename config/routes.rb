@@ -34,7 +34,12 @@ Rails.application.routes.draw do
       resources :password_resets
       resources :patients
       resources :categories, only: [:index]
-      resources :clients
+      resources :clients, only: [:create, :index, :update, :destroy] do
+        collection do
+          post :export
+        end
+      end
+
       resources :companies, only: [:index, :create, :show, :update, :destroy]
       resources :calendars, only: [:index]  
       resources :users do
