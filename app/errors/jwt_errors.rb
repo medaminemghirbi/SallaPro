@@ -1,2 +1,5 @@
-class JwtExpiredError < StandardError; end
-class JwtInvalidError < StandardError; end
+# app/errors/jwt_errors.rb
+module JwtErrors
+  class Expired < StandardError; end
+  class Invalid < StandardError; end
+end
