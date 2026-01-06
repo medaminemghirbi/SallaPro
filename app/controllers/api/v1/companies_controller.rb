@@ -16,11 +16,12 @@ class Api::V1::CompaniesController < ApplicationController
       admin = User.create!(admin_params.merge(type: "Admin"))
 
       # 2️⃣ Create the company linked to this admin
-      company_params = params.permit(:company_name, :billing_address, :description)
+      company_params = params.permit(:company_name, :billing_address, :description, :categorie_id)
       company = Company.create!(
         name: company_params[:company_name],
         billing_address: company_params[:billing_address] || admin.email,
         description: company_params[:description],
+        categorie_id: company_params[:categorie_id],
         user_id: admin.id
       )
 
@@ -77,7 +78,7 @@ class Api::V1::CompaniesController < ApplicationController
   end
 
 def company_params
-  params.require(:company).permit(:name, :billing_address, :description, :active, :avatar, :phone_number)
+  params.require(:company).permit(:name, :billing_address, :description, :active, :avatar, :phone_number, :categorie_id)
 end
 
 

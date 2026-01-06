@@ -83,7 +83,8 @@ company = Company.create!(
   name: "Salle Sghaier",
   phone_number: "+21612345678",
   description: "A description for Salle Sghaier",
-  billing_address: "123 Billing St, City, Country"
+  billing_address: "123 Billing St, City, Country",
+  categorie_id: Categorie.first.id # link to an existing categorie
 )
 
 puts "✔️ Company seeded"

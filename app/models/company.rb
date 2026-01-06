@@ -1,5 +1,6 @@
 class Company < ApplicationRecord
   belongs_to :admin, class_name: 'User', foreign_key: 'user_id'
+  belongs_to :categorie, optional: true
   validates :name, presence: true
   has_one_attached :avatar, dependent: :destroy
 
