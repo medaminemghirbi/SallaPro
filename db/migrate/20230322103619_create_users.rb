@@ -22,6 +22,8 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :firstname
       t.string :lastname
       t.string :address
+      t.float :latitude
+      t.float :longitude
       t.date :birthday
       t.integer :gender, default: 0
       t.integer :civil_status, default: 0

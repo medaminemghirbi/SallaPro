@@ -85,7 +85,7 @@ module Api
       def client_params
         params.permit(
           :firstname, :lastname, :email, :password, :password_confirmation,
-          :birthday, :address, :phone_number, :country
+          :birthday, :address, :latitude, :longitude, :phone_number, :country
         )
       end
 
