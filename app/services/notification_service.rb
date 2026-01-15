@@ -1,8 +1,8 @@
 class NotificationService
-    def initialize(consultation)
-      @consultation = consultation
-      @doctor = User.find(@consultation.doctor_id)
-      @patient = User.find(@consultation.patient_id)
+    def initialize(reservation)
+      @reservation = reservation
+      @client = User.find(@reservation.client_id)
+      @company = User.find(@reservation.company_id)
     end
   
     def send_notifications
@@ -27,21 +27,21 @@ class NotificationService
     end
   
     def send_email(user)
-      DemandeMailer.send_mail_demande(user, @consultation).deliver
+      DemandeMailer.send_mail_demande(user, @reservation).deliver
     end
   
     def send_push(user)
-      ActionCable.server.broadcast "ConsultationChannel_#{user.id}", {
-        consultation: @consultation,
-        status: @consultation.status
+      ActionCable.server.broadcast "reservationChannel_#{user.id}", {
+        reservation: @reservation,
+        status: @reservation.status
       }
     end
     
     def send_sms_to_patient
-      message = "Your request with the doctor has been accepted. Check your account."
+      message = "Your request with the company has been accepted. Check your account."
       sms_sender = Twilio::SmsSender.new(
         body: message,
-        to_phone_number: @patient.phone_number
+        to_phone_number: @company.phone_number
       )
       sms_sender.send_sms
     rescue => e

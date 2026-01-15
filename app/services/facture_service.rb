@@ -2,14 +2,14 @@
 require 'receipts'
 
 class FactureService
-  def self.generate(consultation)
+  def self.generate(reservation)
     # Set the amount to a default value if not provided
-    amount = consultation.doctor.amount || 70.0 
+    amount = reservation.amount || 70.0 
 
     receipt = Receipts::Receipt.new(
       details: [
-        ["Receipt Number", consultation.id],
-        ["Date Paid", consultation.updated_at.strftime('%d/%m/%Y')],
+        ["Receipt Number", reservation.id],
+        ["Date Paid", reservation.updated_at.strftime('%d/%m/%Y')],
         ["Payment Method", "Online Payment"]
       ],
       company: {
@@ -19,18 +19,18 @@ class FactureService
         logo: Rails.root.join("app/assets/images/logo_with_beta.png")
       },
       recipient: [
-        consultation.patient.firstname,
+        reservation.patient.firstname,
         "Address if available",
         "City, State, ZIP",
         "kalla",
 
-        consultation.patient.email
+        reservation.patient.email
       ],
       line_items: [
-        ["<b>Item</b>", "<b>Unit Cost</b>", "<b>Consultation</b>", "<b>Amount</b>"],
-        ["Consultation with Dr. #{consultation.doctor.firstname} #{consultation.doctor.lastname}", "#{amount} TND", "1", "#{amount} TND"],
+        ["<b>Item</b>", "<b>Unit Cost</b>", "<b>reservation</b>", "<b>Amount</b>"],
+        ["reservation with Dr. #{reservation.company.admin.firstname} #{reservation.company.admin.lastname}", "#{amount} TND", "1", "#{amount} TND"],
         [nil, nil, "Subtotal", "#{amount} TND"],
-        [nil, nil, "DermaPro Fee (10%)", "#{(amount * 0.10).round(2)} TND"],
+        [nil, nil, "Reservily Fee (10%)", "#{(amount * 0.10).round(2)} TND"],
         [nil, nil, "Total", "#{(amount * 0.90).round(2)} TND"], # Total after the platform fee
         [nil, nil, "<b>Amount Paid</b>", "#{amount} TND"]
       ],
@@ -38,7 +38,7 @@ class FactureService
     )
 
     # Save the PDF to a file or return the raw data
-    file_path = Rails.root.join("tmp", "facture_#{consultation.id}.pdf")
+    file_path = Rails.root.join("tmp", "facture_#{reservation.id}.pdf")
     receipt.render_file(file_path)
     file_path
   end

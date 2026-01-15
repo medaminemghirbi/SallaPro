@@ -1,34 +1,8 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :authorize_request, except: %i[plateform_stats gender_stats count_all_for_admin update_image_user update_location top_consultation_gouvernement]
+  before_action :authorize_request, except: %i[plateform_stats gender_stats count_all_for_admin update_image_user update_location]
   # ************************* custom functionlity ***************************#
   before_action :set_admin, only: [:resend_confirmation]
 
-  def count_all_for_admin
-    @apointements = Consultation.current.all.count
-    @patients = Patient.current.all.count
-    @blogs = Blog.current.all.count
-    @doctors = Doctor.current.all.count
-    @maladies = Maladie.current.all.count
-
-    render json: {
-      apointements: @apointements,
-      patients: @patients,
-      blogs: @blogs,
-      doctors: @doctors,
-      maladies: @maladies
-    }
-  end
-
-  def top_consultation_gouvernement
-    top_consultations = Consultation.joins(:patient)
-                                     .group('users.location')
-                                     .order('COUNT(users.location) DESC')
-                                     .limit(24)
-                                     .count
-  
-    render json: top_consultations
-  end
-  
   
   def gender_stats
     gender_counts = User

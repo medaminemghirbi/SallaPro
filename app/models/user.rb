@@ -27,6 +27,8 @@ class User < ApplicationRecord
 
   ## Associations
   has_one_attached :avatar, dependent: :destroy
+  has_many :notifications, dependent: :destroy
+  has_many :assigned_materials, class_name: 'Material', foreign_key: 'assigned_to_id', dependent: :nullify
 
   def verification_pdf_url
     # Get the URL of the associated image
