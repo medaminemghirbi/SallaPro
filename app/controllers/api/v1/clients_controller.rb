@@ -4,11 +4,11 @@ module Api
   module V1
     class ClientsController < ApplicationController
       before_action :authorize_request
-      before_action :set_client, only: [:show, :update, :destroy]
+      before_action :set_client, only: [:update, :destroy]
 
       # GET /api/v1/clients
       def index
-        @clients = Client.where(company_id: current_user.company_id)
+        @clients = Client.where(company_id: params[:company_id])
         @clients = @clients.search_by_term(params[:search]) if params[:search].present?
         @clients = @clients.by_status(params[:status]) if params[:status].present?
         @clients = @clients.by_country(params[:country]) if params[:country].present?
@@ -19,13 +19,14 @@ module Api
 
       # GET /api/v1/clients/:id
       def show
+        @clients = Client.where(company_id: current_user.company_id)
         render json: @client, serializer: ClientSerializer, status: :ok
       end
 
       # POST /api/v1/clients
       def create
         ActiveRecord::Base.transaction do
-          client = User.create!(client_params.merge(type: 'Client', status: 'active'))
+          client = User.create!(client_params.merge(type: "Client", status: "active"))
           client.skip_confirmation!
 
           attach_avatar(client) if params[:avatar].present?
@@ -38,10 +39,10 @@ module Api
 
       # POST /api/v1/clients/export
       def export
-        clients = Client.all
+        clients = Client.where(company_id: current_user.company_id)
         clients = clients.search_by_term(params.dig(:filters, :search)) if params.dig(:filters, :search).present?
         clients = clients.by_status(params.dig(:filters, :status)) if params.dig(:filters, :status).present?
-        
+
         # Filter by IDs if provided
         if params[:clientIds].present? && params[:clientIds].is_a?(Array) && params[:clientIds].any?
           clients = clients.where(id: params[:clientIds])
@@ -55,7 +56,7 @@ module Api
           send_data result[:data],
                     filename: result[:filename],
                     type: result[:type],
-                    disposition: 'attachment'
+                    disposition: "attachment"
         end
       end
 
@@ -65,30 +66,30 @@ module Api
           :firstname, :lastname, :email, :phone_number, :address,
           :birthday, :country, :latitude, :longitude, :status
         )
-        
+
         if @client.update(update_params)
           render json: {
-            message: 'Client updated successfully',
-            client: ClientSerializer.new(@client)
+            message: "Client updated successfully",
+            client: ClientSerializer.new(@client),
           }, status: :ok
         else
           render json: {
-            error: 'Failed to update client',
-            details: @client.errors.full_messages
+            error: "Failed to update client",
+            details: @client.errors.full_messages,
           }, status: :unprocessable_entity
         end
       end
-      
+
       # DELETE /api/v1/clients/:id
       def destroy
         if @client.destroy
           render json: {
-            message: 'Client deleted successfully'
+            message: "Client deleted successfully",
           }, status: :ok
         else
           render json: {
-            error: 'Failed to delete client',
-            details: @client.errors.full_messages
+            error: "Failed to delete client",
+            details: @client.errors.full_messages,
           }, status: :unprocessable_entity
         end
       end
@@ -96,19 +97,19 @@ module Api
       # GET /api/v1/clients/stats
       def stats
         stats = {
-          total: Client.count,
-          active: Client.active.count,
-          inactive: Client.inactive.count,
-          blocked: Client.blocked.count,
-          by_country: Client.group(:country).count,
-          recent_30_days: Client.where('created_at >= ?', 30.days.ago).count
+          total: Client.where(company_id: current_user.company_id).count,
+          active: Client.where(company_id: current_user.company_id).active.count,
+          inactive: Client.where(company_id: current_user.company_id).inactive.count,
+          blocked: Client.where(company_id: current_user.company_id).blocked.count,
+          by_country: Client.where(company_id: current_user.company_id).group(:country).count,
+          recent_30_days: Client.where(company_id: current_user.company_id).where("created_at >= ?", 30.days.ago).count,
         }
         render json: stats, status: :ok
       end
 
       # GET /api/v1/clients/countries
       def countries
-        countries = Client.distinct.pluck(:country).compact.sort
+        countries = Client.where(company_id: current_user.company_id).distinct.pluck(:country).compact.sort
         render json: countries, status: :ok
       end
 
@@ -117,13 +118,13 @@ module Api
       def set_client
         @client = Client.find(params[:id])
       rescue ActiveRecord::RecordNotFound
-        render json: { error: 'Client not found' }, status: :not_found
+        render json: { error: "Client not found" }, status: :not_found
       end
 
       def client_params
         params.permit(
           :firstname, :lastname, :email, :password, :password_confirmation,
-          :birthday, :address, :latitude, :longitude, :phone_number, :country
+          :birthday, :address, :latitude, :longitude, :phone_number, :country, :company_id
         )
       end
 

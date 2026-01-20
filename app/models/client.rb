@@ -3,7 +3,7 @@ class Client < User
   include Rails.application.routes.url_helpers
 
   # Associations
-  has_one :company, foreign_key: 'user_id', dependent: :destroy
+  belongs_to :company
 
   # Geocoding
   geocoded_by :address
@@ -20,20 +20,20 @@ class Client < User
   before_validation :set_default_status, on: :create
 
   # Scopes
-  scope :active, -> { where(status: 'active') }
-  scope :inactive, -> { where(status: 'inactive') }
-  scope :blocked, -> { where(status: 'blocked') }
+  scope :active, -> { where(status: "active") }
+  scope :inactive, -> { where(status: "inactive") }
+  scope :blocked, -> { where(status: "blocked") }
   scope :recent, -> { order(created_at: :desc) }
   scope :by_country, ->(country) { where(country: country) if country.present? }
 
   scope :search_by_term, ->(term) {
-    return all if term.blank?
-    
-    where(
-      "LOWER(firstname) LIKE :term OR LOWER(lastname) LIKE :term OR LOWER(email) LIKE :term OR LOWER(phone_number) LIKE :term OR LOWER(address) LIKE :term",
-      term: "%#{term.downcase}%"
-    )
-  }
+          return all if term.blank?
+
+          where(
+            "LOWER(firstname) LIKE :term OR LOWER(lastname) LIKE :term OR LOWER(email) LIKE :term OR LOWER(phone_number) LIKE :term OR LOWER(address) LIKE :term",
+            term: "%#{term.downcase}%",
+          )
+        }
 
   scope :by_status, ->(status) { where(status: status) if status.present? }
 
@@ -48,7 +48,7 @@ class Client < User
 
   def age
     return nil unless birthday.present?
-    
+
     now = Time.current.to_date
     age = now.year - birthday.year
     age -= 1 if now < birthday + age.years
@@ -56,7 +56,7 @@ class Client < User
   end
 
   def member_since
-    created_at&.strftime('%B %Y')
+    created_at&.strftime("%B %Y")
   end
 
   def last_activity
@@ -66,6 +66,6 @@ class Client < User
   private
 
   def set_default_status
-    self.status ||= 'active'
+    self.status ||= "active"
   end
 end
